@@ -17,6 +17,9 @@ function addChild() {
     )
   }
 }
+function removeChild(childName: string) {
+  childs.value = childs.value.filter(el => el.name !== childName)
+}
 </script>
 
 <template>
@@ -46,7 +49,7 @@ function addChild() {
       </div>
       <div class="flex flex-col gap-2.5 mt-5">
         <template v-if="childs.length">
-          <ChildSet v-for="child in childs" :key="child.name" :name="child.name" :age="child.age" />
+          <ChildSet v-for="child in childs" :key="child.name" :name="child.name" :age="child.age" @remove-child="removeChild" />
         </template>
       </div>
     </section>
