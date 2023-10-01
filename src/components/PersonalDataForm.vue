@@ -20,16 +20,19 @@ function addChild() {
 function removeChild(childName: string) {
   childs.value = childs.value.filter(el => el.name !== childName)
 }
+function handleSubmit(event) {
+  console.log(event)
+}
 </script>
 
 <template>
-  <form action="#">
+  <form action="#" @submit.prevent="handleSubmit">
     <h2 class="text-black text-base font-medium mb-5">
       Персональные данные
     </h2>
     <div class="flex flex-col gap-2.5 w-full">
-      <AppInput placeholder="Введите имя" label="Имя" />
-      <AppInput placeholder="Введите возраст" label="Возраст" />
+      <AppInput required placeholder="Введите имя" label="Имя" />
+      <AppInput required placeholder="Введите возраст" label="Возраст" />
     </div>
     <section class="mt-11">
       <div class="flex justify-between items-center">
@@ -53,6 +56,9 @@ function removeChild(childName: string) {
         </template>
       </div>
     </section>
+    <AppButton type="submit" class="text-white bg-primary border-2 border-primary rounded-full mt-8">
+      Сохранить
+    </AppButton>
   </form>
 </template>
 

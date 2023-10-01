@@ -13,8 +13,8 @@ defineEmits<{
 
 <template>
   <fieldset class="flex gap-4">
-    <AppInput :id="name" :name="name" placeholder="Введите имя" label="Имя" />
-    <AppInput :id="age" :name="age" placeholder="Введите возраст" label="Возраст" />
+    <AppInput :id="name" required :name="name" placeholder="Введите имя" label="Имя" />
+    <AppInput :id="age" required :name="age" placeholder="Введите возраст" label="Возраст" />
     <AppButton type="button" class="text-primary" @click="$emit('removeChild', name)">
       Удалить
     </AppButton>
