@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
+import PersonalDataForm from '@/components/PersonalDataForm.vue'
 </script>
 
 <template>
-  <main>
-    <TheWelcome />
+  <main class="w-full container mx-auto mt-8">
+    <PersonalDataForm />
   </main>
 </template>

@@ -1,11 +1,8 @@
 <script setup lang="ts">
-
 </script>
 
 <template>
-    <div>
-        
-    </div>
+  <main />
 </template>
 
 <style lang="scss" scoped>
