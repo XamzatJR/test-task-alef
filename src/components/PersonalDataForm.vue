@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, toRefs } from 'vue'
+import { useRouter } from 'vue-router'
 import AppButton from './AppButton.vue'
 import AppInput from './AppInput.vue'
 import { type Info, useUserInfo } from '@/composables/useUserInfo'
@@ -9,13 +10,13 @@ const children = ref<Info[]>([])
 const MAX_CHILDS = 5
 
 const { setChildren, setUser } = useUserInfo()
-
+const $router = useRouter()
 function addChild() {
   if (children.value.length < MAX_CHILDS) {
     children.value.push(
       {
-        name: `child-name-${Date.now()}`,
-        age: `child-age-${Date.now() + 1}`,
+        name: '',
+        age: '',
       },
     )
   }
@@ -26,6 +27,7 @@ function removeChild(childName: string) {
 function handleSubmit() {
   setUser(user.value)
   setChildren(children.value)
+  $router.push({ name: 'preview' })
 }
 </script>
 
@@ -36,7 +38,7 @@ function handleSubmit() {
         id="username"
         label="Имя"
         name="username"
-        required
+        required pattern="\p{L}{3,16}"
         placeholder="Введите имя"
         :model-value="user.name"
         @update:model-value="newValue => user.name = newValue"
@@ -45,7 +47,7 @@ function handleSubmit() {
         id="userage"
         label="Возраст"
         name="userage"
-        required
+        required pattern="\d{1,2}"
         placeholder="Введите возраст"
         :model-value="user.age"
         @update:model-value="newValue => user.age = newValue"
@@ -71,10 +73,20 @@ function handleSubmit() {
         <template v-if="children.length">
           <fieldset v-for="(child, idx) in children" :key="idx" class="flex gap-4">
             <AppInput
-              :model-value="child.name" required :name="`child-name-${idx}`" placeholder="Введите имя" label="Имя" @update:model-value="newValue => child.name = newValue"
+              label="Имя"
+              :name="`child-name-${idx}`"
+              required pattern="\p{L}{3,16}"
+              placeholder="Введите имя"
+              :model-value="child.name"
+              @update:model-value="newValue => child.name = newValue"
             />
             <AppInput
-              :model-value="child.age" required :name="`child-age-${idx}`" placeholder="Введите возраст" label="Возраст" @update:model-value="newValue => child.age = newValue"
+              label="Возраст"
+              :name="`child-age-${idx}`"
+              required pattern="\d{1,2}"
+              placeholder="Введите возраст"
+              :model-value="child.age"
+              @update:model-value="newValue => child.age = newValue"
             />
             <AppButton
               type="button" class="text-primary"
