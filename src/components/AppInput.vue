@@ -1,7 +1,9 @@
 <script setup lang="ts">
 defineProps<{
   label: string
+  modelValue: any
 }>()
+defineEmits(['update:modelValue'])
 </script>
 
 <template>
@@ -9,7 +11,11 @@ defineProps<{
     <div class="text-sm text-gray-400">
       {{ label }}
     </div>
-    <input class="block w-full text-sm font-normal text-black focus:outline-none placeholder:text-black" v-bind="$attrs" type="text">
+    <input
+      class="block w-full text-sm font-normal text-black focus:outline-none placeholder:text-black" v-bind="$attrs" type="text"
+      :value="modelValue"
+      @input="$emit('update:modelValue', $event.target?.value)"
+    >
   </label>
 </template>
 
