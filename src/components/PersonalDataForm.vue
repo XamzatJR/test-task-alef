@@ -1,15 +1,18 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, toRefs } from 'vue'
 import AppButton from './AppButton.vue'
 import AppInput from './AppInput.vue'
-import ChildSet from './ChildSet.vue'
+import { type Info, useUserInfo } from '@/composables/useUserInfo'
 
-const childs = ref<{ name: string; age: string }[]>([])
+const user = ref<Info>({ name: '', age: '' })
+const children = ref<Info[]>([])
 const MAX_CHILDS = 5
 
+const { setChildren, setUser } = useUserInfo()
+
 function addChild() {
-  if (childs.value.length < MAX_CHILDS) {
-    childs.value.push(
+  if (children.value.length < MAX_CHILDS) {
+    children.value.push(
       {
         name: `child-name-${Date.now()}`,
         age: `child-age-${Date.now() + 1}`,
@@ -18,21 +21,35 @@ function addChild() {
   }
 }
 function removeChild(childName: string) {
-  childs.value = childs.value.filter(el => el.name !== childName)
+  children.value = children.value.filter(el => el.name !== childName)
 }
-function handleSubmit(event) {
-  console.log(event)
+function handleSubmit() {
+  setUser(user.value)
+  setChildren(children.value)
 }
 </script>
 
 <template>
   <form action="#" @submit.prevent="handleSubmit">
-    <h2 class="text-black text-base font-medium mb-5">
-      Персональные данные
-    </h2>
     <div class="flex flex-col gap-2.5 w-full">
-      <AppInput required placeholder="Введите имя" label="Имя" />
-      <AppInput required placeholder="Введите возраст" label="Возраст" />
+      <AppInput
+        id="username"
+        label="Имя"
+        name="username"
+        required
+        placeholder="Введите имя"
+        :model-value="user.name"
+        @update:model-value="newValue => user.name = newValue"
+      />
+      <AppInput
+        id="userage"
+        label="Возраст"
+        name="userage"
+        required
+        placeholder="Введите возраст"
+        :model-value="user.age"
+        @update:model-value="newValue => user.age = newValue"
+      />
     </div>
     <section class="mt-11">
       <div class="flex justify-between items-center">
@@ -51,8 +68,21 @@ function handleSubmit(event) {
         </AppButton>
       </div>
       <div class="flex flex-col gap-2.5 mt-5">
-        <template v-if="childs.length">
-          <ChildSet v-for="child in childs" :key="child.name" :name="child.name" :age="child.age" @remove-child="removeChild" />
+        <template v-if="children.length">
+          <fieldset v-for="(child, idx) in children" :key="idx" class="flex gap-4">
+            <AppInput
+              :model-value="child.name" required :name="`child-name-${idx}`" placeholder="Введите имя" label="Имя" @update:model-value="newValue => child.name = newValue"
+            />
+            <AppInput
+              :model-value="child.age" required :name="`child-age-${idx}`" placeholder="Введите возраст" label="Возраст" @update:model-value="newValue => child.age = newValue"
+            />
+            <AppButton
+              type="button" class="text-primary"
+              @click="removeChild(child.name)"
+            >
+              Удалить
+            </AppButton>
+          </fieldset>
         </template>
       </div>
     </section>
