@@ -1,0 +1,1 @@
+import{b as s}from"./index-a14f82aa.js";const n=s({name:"",age:""}),r=s([]);function a(){function t(e){n.value=e}function o(e){r.value=e}return{user:n,children:r,setUser:t,setChildren:o}}export{a as u};
