@@ -6,7 +6,7 @@ import AppFooter from './components/AppFooter.vue'
 
 <template>
   <AppHeader />
-  <main class="w-full container mx-auto mt-8 px-4">
+  <main class="w-full max-w-2xl mx-auto mt-8 px-4">
     <h1 class="text-black text-base font-medium mb-5">
       Персональные данные
     </h1>
