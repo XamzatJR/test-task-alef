@@ -1,17 +1,22 @@
 import { ref } from 'vue'
 
-export interface Info {
+export interface IUser {
   name: string
   age: string
 }
-const user = ref<Info>({ name: '', age: '' })
-const children = ref<Info[]>([])
+export interface IChild {
+  id: number
+  name: string
+  age: string
+}
+const user = ref<IUser>({ name: '', age: '' })
+const children = ref<IChild[]>([])
 
 export function useUserInfo() {
-  function setUser(newUser: Info) {
+  function setUser(newUser: IUser) {
     user.value = newUser
   }
-  function setChildren(newChildren: Info[]) {
+  function setChildren(newChildren: IChild[]) {
     children.value = newChildren
   }
   return { user, children, setUser, setChildren }

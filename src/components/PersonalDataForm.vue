@@ -3,10 +3,10 @@ import { ref, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import AppButton from './AppButton.vue'
 import AppInput from './AppInput.vue'
-import { type Info, useUserInfo } from '@/composables/useUserInfo'
+import { type IChild, type IUser, useUserInfo } from '@/composables/useUserInfo'
 
-const user = ref<Info>({ name: '', age: '' })
-const children = ref<Info[]>([])
+const user = ref<IUser>({ name: '', age: '' })
+const children = ref<IChild[]>([])
 const MAX_CHILDS = 5
 
 const { setChildren, setUser } = useUserInfo()
@@ -15,14 +15,15 @@ function addChild() {
   if (children.value.length < MAX_CHILDS) {
     children.value.push(
       {
+        id: Date.now(),
         name: '',
         age: '',
       },
     )
   }
 }
-function removeChild(childName: string) {
-  children.value = children.value.filter(el => el.name !== childName)
+function removeChild(childId: number) {
+  children.value = children.value.filter(el => el.id !== childId)
 }
 function handleSubmit() {
   setUser(user.value)
@@ -71,10 +72,10 @@ function handleSubmit() {
       </div>
       <div class="flex flex-col gap-2.5 mt-5">
         <template v-if="children.length">
-          <fieldset v-for="(child, idx) in children" :key="idx" class="flex gap-4">
+          <fieldset v-for="child in children" :key="child.id" class="flex gap-4">
             <AppInput
               label="Имя"
-              :name="`child-name-${idx}`"
+              :name="`child-name-${child.id}`"
               required pattern="\p{L}{3,16}"
               placeholder="Введите имя"
               :model-value="child.name"
@@ -82,7 +83,7 @@ function handleSubmit() {
             />
             <AppInput
               label="Возраст"
-              :name="`child-age-${idx}`"
+              :name="`child-age-${child.id}`"
               required pattern="\d{1,2}"
               placeholder="Введите возраст"
               :model-value="child.age"
@@ -90,7 +91,7 @@ function handleSubmit() {
             />
             <AppButton
               type="button" class="text-primary"
-              @click="removeChild(child.name)"
+              @click="removeChild(child.id)"
             >
               Удалить
             </AppButton>
